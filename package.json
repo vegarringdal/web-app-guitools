@@ -1,0 +1,20 @@
+{
+    "name": "app-guitools",
+    "version": "0.0.0",
+    "scripts": {
+        "eslint": "eslint ./src/**/*.ts",
+        "eslint:fix": "eslint --fix ./src/**/*.ts",
+        "test": "jest",
+        "testing": "jest --watch",
+        "prepare": "husky install"
+    },
+    "author": "vegar.ringdal@gmail.com",
+    "license": "PRIVATE",
+    "prepare": "husky install",
+    "keywords": [],
+    "devDependencies": {
+        "@commitlint/cli": "^16.2.3",
+        "@commitlint/config-conventional": "^16.2.1",
+        "husky": "^7.0.4"
+    }
+}
