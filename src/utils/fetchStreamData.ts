@@ -18,6 +18,8 @@ export async function fetchStreamData(
 ) {
     const t0 = performance.now();
     let fetchedRows = 0;
+    let metaData = null;
+    const metadataObj: any = {};
 
     try {
         const response = await fetch(httpUrl, {
@@ -86,8 +88,17 @@ export async function fetchStreamData(
                             if (buffer[0] === ",") {
                                 buffer = buffer.substring(1, buffer.length);
                             }
+                            const data: any[] = JSON.parse(buffer);
+                            if (!metaData) {
+                                metaData = data.shift();
+                                metaData.forEach((x: any, i: number) => {
+                                    metadataObj[x.name] = i;
+                                });
+                                callback({ type: "meta", data: metaData });
+                            }
+                            transformData(metaData, data);
 
-                            callback({ type: "data", data: JSON.parse(buffer) });
+                            callback({ type: "data", data: oracleArrayToJsonProxy(metaData, metadataObj, data) });
                             buffer = "";
                         }
 
@@ -131,7 +142,10 @@ export async function fetchStreamData(
 }
 
 // callback type
-type streamCallback = (update: { type: "data" | "length" | "time-first" | "time-total" | "error"; data: any }) => void;
+type streamCallback = (update: {
+    type: "meta" | "data" | "length" | "time-first" | "time-total" | "error";
+    data: any;
+}) => void;
 
 // simple data type
 export type metaData = {
