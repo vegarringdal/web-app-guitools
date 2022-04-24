@@ -1,6 +1,7 @@
 import { guiStateController } from "../state/guiStateController";
+import { getApiInfoCallbackType } from "./getApiInfoCallbackType";
 import { httpApiConfig } from "./httpApiConfig";
-import { getApiInfoCallbackType } from "./getApiinfoCallbackType";
+
 
 export async function getApiInfo(apiName: string, callback: getApiInfoCallbackType) {
     callback({

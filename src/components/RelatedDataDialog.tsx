@@ -1,9 +1,7 @@
 import React from "react";
 import { getDataControllerByName } from "../utils/getDataControllerByName";
 import { dataStateController } from "../state/dataStateController";
-import { getService } from "../utils/serviceMap";
 import { SimpleHtmlGrid } from "./SimpleHtmlGrid";
-import { getApiConfig } from "../utils/apiConfig";
 
 /**
  * this is contrlled by dataController

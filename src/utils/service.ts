@@ -1,34 +1,14 @@
-import { ApiInterface } from "@rad-common";
+import { serviceCallback } from "./serviceCallback";
 import { ServiceCallbackType } from "./ServiceCallbackType";
-import { setService } from "./serviceMap";
 
 export class Service {
-    private apiQuery: string;
-    private apiUpdate: string;
-    private viewConfig: ApiInterface;
-    private lastRequest: Date;
-    private projectCode: string | null;
-    private dataControllerName: string;
-    private userRoles: any;
     callbackFn: ServiceCallbackType;
+    dataControllerName: string;
+    lastRequest: any;
 
-    constructor(
-        dataControllerName: string,
-        apiQuery: string,
-        apiUpdate: string,
-        tableConfig: ApiInterface,
-        userRoles: any,
-        projectCode: string | null,
-        callbackFn: ServiceCallbackType
-    ) {
-        this.userRoles = userRoles;
+    constructor(dataControllerName: string, callbackFn: ServiceCallbackType = serviceCallback) {
         this.dataControllerName = dataControllerName;
-        this.apiQuery = apiQuery;
-        this.apiUpdate = apiUpdate;
-        this.viewConfig = tableConfig;
-        this.projectCode = projectCode;
         this.lastRequest = null as any;
         this.callbackFn = callbackFn;
-        setService(dataControllerName, this);
     }
 }

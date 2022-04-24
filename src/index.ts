@@ -36,8 +36,6 @@ export {
  */
 export { initDarkTheme } from "./utils/darkThemeHelpers";
 export { toggelDarkTheme } from "./utils/toggelDarkTheme";
-export { Service } from "./utils/service";
-export { getService, setService } from "./utils/serviceMap";
 export { serviceCallback } from "./utils/serviceCallback";
 export { getDataControllerByName } from "./utils/getDataControllerByName";
 export { resetAllDatacontrollersExcept } from "./utils/resetAllDatacontrollersExcept";
