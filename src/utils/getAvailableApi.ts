@@ -4,14 +4,7 @@ import { setApiConfig } from "./apiConfig";
 import { httpApiConfig } from "./httpApiConfig";
 import { getAvailableApiCallbackType } from "./getAvailableApiCallbackType";
 
-export async function getAvailableApi(
-    useDataControllerName: string,
-    addToMainDataController: boolean,
-    callback: getAvailableApiCallbackType
-) {
-    const dataController = getDataControllerByName(useDataControllerName);
-    dataController.dataSource.setData([]);
-
+export async function getAvailableApi(callback: getAvailableApiCallbackType) {
     callback({
         type: "info",
         header: "Connecting to server",
@@ -39,50 +32,27 @@ export async function getAvailableApi(
     }
 
     const jsonData = await response.json();
-
-    setApiConfig(useDataControllerName, jsonData);
-
-    if (addToMainDataController && Array.isArray(jsonData?.paths)) {
-        dataController.gridInterface.loadSettings({
-            cellHeight: 20,
-            panelHeight: 25,
-            footerHeight: 40,
-            readonly: true,
-            selectionMode: "single",
-            groups: [
-                {
-                    width: 300,
-                    rows: [
-                        {
-                            header: "URL_PATH",
-                            attribute: "path",
-                            readonly: true,
-                            type: "text",
-                            filterable: {},
-
-                            sortable: {},
-                            allowGrouping: true
-                        }
-                    ]
-                },
-                {
-                    width: 500,
-                    rows: [
-                        {
-                            header: "DESCRIPTION",
-                            attribute: "description",
-                            readonly: true,
-                            type: "text",
-                            filterable: {},
-
-                            sortable: {},
-                            allowGrouping: true
-                        }
-                    ]
-                }
-            ]
+    if (Array.isArray(jsonData.paths)) {
+        callback({
+            type: "info",
+            header: "Loading data",
+            content: "Getting api available"
         });
-        dataController.dataSource.setData(jsonData.paths);
+
+        for (let i = 0; i < jsonData.paths.length; i++) {
+            const response = await fetch(httpApiConfig.info_url + jsonData.paths[i].path, {
+                method: "GET",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: null
+            });
+            if (response.ok) {
+                const jsonData = await response.json();
+                setApiConfig(jsonData.api.apiName, jsonData);
+            }
+        }
     }
 
     setTimeout(() => {
@@ -92,12 +62,6 @@ export async function getAvailableApi(
             content: null
         });
     }, 100);
-
-    callback({
-        type: "info",
-        header: "Loading data",
-        content: "Updating grid, please wait"
-    });
 
     guiStateController.setState({ currentUser: jsonData?.user?.userName || "unknown" });
 }
