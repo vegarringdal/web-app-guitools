@@ -1,23 +1,7 @@
 import { ApiInterface } from "@rad-common";
+import { ServiceCallbackType } from "./ServiceCallbackType";
 import { setService } from "./serviceMap";
 
-// callback type/events
-export type serviceCallbackEvents = {
-    type: "done" | "info" | "error";
-    content: string | null;
-    header: string | null;
-    loadingDataRuntimeMilliseconds?: number | null;
-    loadingDataReplyMilliseconds?: number | null;
-    loadingDataRowCount?: number | null;
-};
-export type ServiceCallbackType = (event: serviceCallbackEvents) => void;
-
-
-/**
- * static enpoint between client/server
- * split into functions, might be easier to use/overview,
- * TODO: try and trim down...getting to large
- */
 export class Service {
     private apiQuery: string;
     private apiUpdate: string;

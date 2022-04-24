@@ -5,13 +5,6 @@
 
 import { metaData } from "./fetchStreamData";
 
-/**
- * takes meta data and array based row data from oracle and created a json proxy
- * @param metaData
- * @param metadataObj
- * @param dataRows
- * @returns
- */
 export function oracleArrayToJsonProxy(metaData: metaData[], metadataObj: any, dataRows: any[]) {
     const jsonArray: any[] = [];
     dataRows.forEach((row: any[]) => {

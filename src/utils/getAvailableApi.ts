@@ -2,21 +2,8 @@ import { getDataControllerByName } from "./getDataControllerByName";
 import { guiStateController } from "../state/guiStateController";
 import { setApiConfig } from "./apiConfig";
 import { httpApiConfig } from "./httpApiConfig";
+import { getAvailableApiCallbackType } from "./getAvailableApiCallbackType";
 
-// callback type/events
-export type getAvailableApiCallbackEvents = {
-    type: "info" | "done" | "error";
-    content: string | null;
-    header: string | null;
-};
-export type getAvailableApiCallbackType = (event: getAvailableApiCallbackEvents) => void;
-
-/**
- * Helper calss for this application, gets all available datasets and user data
- * @param useDataControllerName
- * @param addToMainDataController updates the grid if set
- * @returns
- */
 export async function getAvailableApi(
     useDataControllerName: string,
     addToMainDataController: boolean,
@@ -88,20 +75,6 @@ export async function getAvailableApi(
                             type: "text",
                             filterable: {},
 
-                            sortable: {},
-                            allowGrouping: true
-                        }
-                    ]
-                },
-                {
-                    width: 300,
-                    rows: [
-                        {
-                            header: "READACCESSNEEDED",
-                            attribute: "readAccessNeeded",
-                            readonly: true,
-                            type: "text",
-                            filterable: {},
                             sortable: {},
                             allowGrouping: true
                         }

@@ -1,6 +1,6 @@
 import { ApiInterface, UserRolesInterface } from "@rad-common";
 
-export const apiConfig = new Map<string, apiType>();
+const apiConfig = new Map<string, apiType>();
 
 export type apiType = {
     api: ApiInterface;

@@ -1,6 +1,11 @@
 import { Service } from "./service";
 
-export const serviceMap = new Map<string, Service>();
+const serviceMap = new Map<string, Service>();
+
+
+export function setService(name: string, service: Service) {
+    serviceMap.set(name, service);
+}
 
 export function getService(name: string) {
     if (!serviceMap.has(name)) {
@@ -8,8 +13,4 @@ export function getService(name: string) {
         throw "missing service name: " + name;
     }
     return serviceMap.get(name) as Service;
-}
-
-export function setService(name: string, service: Service) {
-    serviceMap.set(name, service);
 }

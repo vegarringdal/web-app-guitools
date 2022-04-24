@@ -10,14 +10,6 @@ import {
 import { parseAndFixGridConfig } from "./parseAndFixGridConfig";
 /* import { mergeSettingsAndFix } from "./parseAndFixGridConfig"; */
 
-/**
- * generates gridconfig from oracle metadata
- * TODO, clean up URL/SAVE URL part
- * @param metadata
- * @param metaDataOnly
- * @param dataset
- * @returns
- */
 export function generateGridConfig(metadata: any[], metaDataOnly: boolean, dataset: string) {
     const settings = metaDataOnly ? ({} as any) : getDataControllerByName(dataset).gridInterface.saveSettings();
 

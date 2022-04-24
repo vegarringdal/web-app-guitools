@@ -1,12 +1,6 @@
 import { serviceStateController } from "../state/serviceStateController";
-import { serviceCallbackEvents } from "./service";
+import { serviceCallbackEvents } from "./serviceCallbackEvents";
 
-/**
- * helper for gui part of then work
- * this will call state so dialogs will be updated
- * make copy of file if you need to make edits
- * @param event
- */
 export function serviceCallback(event: serviceCallbackEvents) {
     switch (event.type) {
         case "error":

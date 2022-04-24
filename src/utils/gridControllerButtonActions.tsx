@@ -8,11 +8,6 @@ import { generateExcelCallback } from "./generateExcelCallback";
 import { serviceStateController } from "../state/serviceStateController";
 import { navCompactionEvents } from "../components/GridControllerButtons";
 
-/**
- * actions for grid Controller buttons
- * @param name
- * @param dataSet
- */
 export async function gridControllerButtonActions(name: navCompactionEvents, dataSet: string) {
     const serviceState = serviceStateController.getState();
     const ds = getDataControllerByName(dataSet).dataSource;

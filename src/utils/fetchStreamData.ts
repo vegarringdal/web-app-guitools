@@ -3,10 +3,8 @@
 import { transformData } from "./transformData";
 import { oracleArrayToJsonProxy } from "./oracleArrayToJsonProxy";
 import { FilterArgument } from "@simple-html/datasource";
-
-// important, this needs to be same as server side
-export const STREAM_WRITE_TAG_END = "!END!";
-export const STREAM_WRITE_ARRAY_SPLIT = "!CHSP!";
+import { STREAM_WRITE_ARRAY_SPLIT } from "./STREAM_WRITE_ARRAY_SPLIT";
+import { STREAM_WRITE_TAG_END } from "./STREAM_WRITE_TAG_END";
 
 /**
  * fetches data by streaming to client, uses my custom api service

@@ -1,12 +1,5 @@
 import { GridConfig } from "@simple-html/grid/dist/types";
 
-/**
- * parses gridconfig with current
- * removed and add new columns if any
- * @param newSettings
- * @param existingSettings
- * @returns
- */
 export function parseAndFixGridConfig(newSettings: GridConfig, existingSettings: GridConfig) {
     const tempNewSettings: GridConfig = JSON.parse(JSON.stringify(newSettings));
 

@@ -1,5 +1,5 @@
 import create from "zustand";
-import { toggelDarkTheme } from "../utils/darkThemeHelpers";
+import { toggelDarkTheme } from "../utils/toggelDarkTheme";
 
 type themeStateControllerType = {
     darktheme: boolean;

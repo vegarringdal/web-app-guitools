@@ -1,12 +1,6 @@
 import { serviceStateController } from "../state/serviceStateController";
-import { generateExcelCallbackEvents } from "./generateExcel";
+import { generateExcelCallbackEvents } from "./generateExcelCallbackEvents";
 
-/**
- * helper for gui part of then work
- * this will call state so dialogs will be updated
- * make copy of file if you need to make edits
- * @param event
- */
 export function generateExcelCallback(event: generateExcelCallbackEvents) {
     switch (event.type) {
         case "error":

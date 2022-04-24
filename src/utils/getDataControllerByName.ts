@@ -1,13 +1,9 @@
-import { dataControllerMap, dataControllerType } from "./dataControllerMap";
+import { dataControllerMap } from "./dataControllerMap";
+import { dataControllerType } from "./dataControllerType";
 
-/**
- * Get controller by name
- * @param name
- * @returns
- */
 export function getDataControllerByName(name: string) {
     if (!dataControllerMap.has(name)) {
-        console.error("missing dynstate", name);
+        console.error("missing controller", name);
         return {} as dataControllerType; // hack
     } else {
         return dataControllerMap.get(name) as dataControllerType;

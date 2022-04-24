@@ -1,11 +1,5 @@
 import { Datasource } from "@simple-html/datasource";
 
-/**
- * Helper to reslect current entity after refresh
- * this will trigger current enity callback witch is useful
- * @param ds
- * @param primaryKey
- */
 export function reSelectCurrentEntityAndRefreshDs(ds: Datasource, primaryKey: string) {
     const oldEntity = ds.currentEntity;
     ds.currentEntity = null;

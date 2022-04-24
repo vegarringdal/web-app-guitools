@@ -22,18 +22,11 @@ import {
     worksheet_XML_footer,
     worksheet_XML_header
 } from "./excelTemplates";
-
 import * as fflate from "fflate";
 import { GridConfig } from "@simple-html/grid/dist/types";
 import { GridInterface } from "@simple-html/grid";
+import { generateExcelCallbackType } from "./generateExcelCallbackType";
 
-/**
- * generates excel report from grid interface
- * @param gridInterface
- * @param selectionOnly
- * @param callback
- * @returns
- */
 export function generateExcel(
     gridInterface: GridInterface<any>,
     selectionOnly: boolean,
@@ -384,11 +377,3 @@ export function generateExcel(
 
 // just to help typescript
 declare const showSaveFilePicker: (x: any) => Promise<any>;
-
-// callback type/events
-export type generateExcelCallbackEvents = {
-    type: "done" | "info" | "error";
-    content: string | null;
-    header: string | null;
-};
-export type generateExcelCallbackType = (event: generateExcelCallbackEvents) => void;
