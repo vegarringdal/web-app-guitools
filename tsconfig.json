@@ -1,7 +1,25 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
-        "noEmit": false,
-        "isolatedModules": false
-    }
+        "rootDirs": ["./src"],
+        "target": "ESNext",
+        "lib": ["DOM", "DOM.Iterable", "ESNext"],
+        "allowJs": false,
+        "baseUrl": ".",
+        "skipLibCheck": true,
+        "esModuleInterop": false,
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "paths": {
+            "@rad-common": ["../rad-common/src/index.ts"]
+        },
+        "forceConsistentCasingInFileNames": true,
+        "module": "ESNext",
+        "moduleResolution": "Node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "jsx": "react"
+    },
+    "include": ["src/**/*.tsx", "src/**/*.ts"],
+    "exclude": ["node_modules", "src/**/*.test.ts"]
 }
