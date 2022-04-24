@@ -1,10 +1,11 @@
 import { dataControllerMap } from "./dataControllerMap";
 import { dataControllerType } from "./dataControllerType";
+import { DataContainer, Datasource } from "@simple-html/datasource";
+import { GridInterface } from "@simple-html/grid";
 
 export function getDataControllerByName(name: string) {
     if (!dataControllerMap.has(name)) {
-        console.error("missing controller", name);
-        return {} as dataControllerType; // hack
+        return {} as any;
     } else {
         return dataControllerMap.get(name) as dataControllerType;
     }

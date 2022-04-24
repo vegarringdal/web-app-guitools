@@ -1,7 +1,7 @@
 import { serviceStateController } from "../state/serviceStateController";
-import { getAvailableApiCallbackEvents } from "./getAvailableApiCallbackEvents";
+import { getApiInfoCallbackEvents } from "./getApiInfoCallbackEvents";
 
-export function getAvailableApiCallback(event: getAvailableApiCallbackEvents) {
+export function getApiInfoCallback(event: getApiInfoCallbackEvents) {
     switch (event.type) {
         case "error":
             serviceStateController.setState({

@@ -48,11 +48,11 @@ export { generateExcelCallback } from "./utils/generateExcelCallback";
 export { generateGridConfig } from "./utils/generateGridConfig";
 export { httpApiConfig } from "./utils/httpApiConfig";
 export { getApiConfig, setApiConfig } from "./utils/apiConfig";
-export { getAvailableApi } from "./utils/getAvailableApi";
-export { getAvailableApiCallback } from "./utils/getAvailableApiCallback";
+export { getApiInfo as getAvailableApi } from "./utils/getApiInfo";
+export { getApiInfoCallback as getAvailableApiCallback } from "./utils/getApiInfoCallback";
 export { markForDeletion } from "./utils/markForDeletion";
 export { parseAndFixGridConfig } from "./utils/parseAndFixGridConfig";
 export { reSelectCurrentEntityAndRefreshDs } from "./utils/reSelectCurrentEntity";
 export { oracleArrayToJsonProxy } from "./utils/oracleArrayToJsonProxy";
 export { fetchStreamData } from "./utils/fetchStreamData";
-
+export { loadDataController } from "./utils/loadDataController";

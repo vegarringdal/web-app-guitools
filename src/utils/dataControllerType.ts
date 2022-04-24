@@ -7,3 +7,4 @@ export type dataControllerType = {
     dataSource: Datasource<any>;
     gridInterface: GridInterface<any>;
 };
+
