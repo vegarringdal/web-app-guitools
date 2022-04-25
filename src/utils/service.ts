@@ -46,16 +46,29 @@ export class Service {
         return new Date(this.lastRequest);
     }
 
-    async loadAll(query?: FilterArgument, metaDataOnly = false) {
+    async loadAll(query?: FilterArgument, updateOnly = false) {
         restApiCallStart();
         this.resetServiceState();
         const controller = getDataControllerByName(this.dataControllerName);
         const apiName = getApiConfig(this.dataControllerName).api.apiName;
-        controller.dataSource.setData([]);
+        const primaryKey = getApiConfig(this.dataControllerName).api.primaryKey;
+
+        const primaryKeys: any[] = [];
+        if(!updateOnly){
+            controller.dataSource.setData([]);
+        } else {
+            const rows = controller.dataSource.getAllData();
+            rows.forEach((r: any) => {
+                primaryKeys.push(r[primaryKey]);
+            });
+        }
+       
 
         const error = await this.fetchData(
-            this.generateQueryUrlParams(httpApiConfig.query_url + apiName, metaDataOnly),
-            query
+            this.generateQueryUrlParams(httpApiConfig.query_url + apiName, false),
+            query,
+            primaryKeys,
+            updateOnly
         );
 
         if (!error) {
@@ -70,12 +83,17 @@ export class Service {
                 content: null
             });
         }
+
+        reSelectCurrentEntityAndRefreshDs(controller.dataSource, primaryKey);
+
         restApiCallEnd();
+        this.callbackFn({
+            type: "done",
+            header: null,
+            content: null
+        });
     }
 
-    reloadData() {
-        // todo
-    }
 
     /**
      * default update, lo logic, this needs to be done before and after
