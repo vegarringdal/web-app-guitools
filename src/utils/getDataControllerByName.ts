@@ -5,7 +5,7 @@ import { GridInterface } from "@simple-html/grid";
 
 export function getDataControllerByName(name: string) {
     if (!dataControllerMap.has(name)) {
-        return {} as any;
+        return {} as dataControllerType;
     } else {
         return dataControllerMap.get(name) as dataControllerType;
     }

@@ -38,7 +38,6 @@ export { initDarkTheme } from "./utils/darkThemeHelpers";
 export { toggelDarkTheme } from "./utils/toggelDarkTheme";
 export { serviceCallback } from "./utils/serviceCallback";
 export { getDataControllerByName } from "./utils/getDataControllerByName";
-export { resetAllDatacontrollersExcept } from "./utils/resetAllDatacontrollersExcept";
 export type { dataControllerType } from "./utils/dataControllerType";
 export { disableStyle } from "./utils/disableStyle";
 export { generateExcel } from "./utils/generateExcel";

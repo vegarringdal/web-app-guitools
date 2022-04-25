@@ -102,19 +102,17 @@ export async function gridControllerButtonActions(name: navCompactionEvents, dat
     /**
      * fetches all
      */
-    function getAll() {
-        const result = { data: "not implemented", success: false };
-        serviceState.errorDialogContent = result.data as string;
-        serviceState.activateErrorDialog();
+    async function getAll() {
+        const service = getDataControllerByName(dataSet).service;
+        await service.loadAll();
     }
 
     /**
      * fetches all data with filter
      */
     function refresh() {
-        const result = { data: "not implemented", success: false };
-        serviceState.errorDialogContent = result.data as string;
-        serviceState.activateErrorDialog();
+        const service = getDataControllerByName(dataSet).service;
+        service.reloadData();
     }
 
     switch (name) {

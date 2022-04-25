@@ -38,7 +38,6 @@ export async function fetchStreamData(
         }
 
         callback({ type: "time-first", data: performance.now() - t0 });
-
         const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
         if (reader) {
             // this will hold leftover data between every read
@@ -74,31 +73,33 @@ export async function fetchStreamData(
                         buffer = buffer + text[i];
 
                         // if open bracket, then its a new group
-                        if (text[i] === "{") {
+                        if (text[i] === "[") {
                             group++;
                         }
 
                         // if close, then group is done
-                        if (text[i] === "}") {
+                        if (text[i] === "]") {
                             group--;
                         }
 
                         // if close bracket, and group is 0, then we are in the end of our array, send back data to caller
-                        if (text[i] === "}" && group === 0) {
+                        if (text[i] === "]" && group === 0) {
                             if (buffer[0] === ",") {
                                 buffer = buffer.substring(1, buffer.length);
                             }
-                            const data: any[] = JSON.parse(buffer);
+                            const data = JSON.parse(buffer);
                             if (!metaData) {
-                                metaData = data.shift();
-                                metaData.forEach((x: any, i: number) => {
+                                metaData = data;
+                                data.forEach((x: any, i: number) => {
                                     metadataObj[x.name] = i;
                                 });
                                 callback({ type: "meta", data: metaData });
+                            } else {
+                                transformData(metaData, data);
+                                const converted = oracleArrayToJsonProxy(metaData, metadataObj, data);
+                                callback({ type: "data", data: converted });
                             }
-                            transformData(metaData, data);
 
-                            callback({ type: "data", data: oracleArrayToJsonProxy(metaData, metadataObj, data) });
                             buffer = "";
                         }
 
@@ -111,7 +112,7 @@ export async function fetchStreamData(
 
                     // if done and we only have bracket of "array" left then we are in the end..
 
-                    if (done && text === "]") {
+                    if ((done && text === "]") || text === ",]") {
                         break;
                     }
                     if (done && !value) {
