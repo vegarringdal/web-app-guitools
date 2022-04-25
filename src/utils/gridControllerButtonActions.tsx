@@ -7,6 +7,7 @@ import { generateExcel } from "./generateExcel";
 import { generateExcelCallback } from "./generateExcelCallback";
 import { serviceStateController } from "../state/serviceStateController";
 import { navCompactionEvents } from "../components/GridControllerButtons";
+import { updateCall } from "./updateCall";
 
 export async function gridControllerButtonActions(name: navCompactionEvents, dataSet: string) {
     const serviceState = serviceStateController.getState();
@@ -68,7 +69,11 @@ export async function gridControllerButtonActions(name: navCompactionEvents, dat
      * save edits
      */
     async function save() {
-        const result = { data: "not implemented", success: false };
+        const result = await updateCall(
+            gridInterface,
+            getApiConfig(dataSet).api,
+            getDataControllerByName(dataSet).service
+        );
         if (result.success) {
             reset();
         } else {

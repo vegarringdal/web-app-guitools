@@ -24,7 +24,7 @@ export async function loadDataController(apiName: string) {
                 {
                     header: col.label || col.name,
                     attribute: col.name,
-                    readonly: metadata.apiRoles.UPDATABLE_COLUMNS.includes(col.name),
+                    readonly: !metadata.apiRoles.UPDATABLE_COLUMNS.includes(col.name),
                     filterable: {},
                     sortable: {},
                     type: col.type
