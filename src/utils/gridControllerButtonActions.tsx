@@ -117,7 +117,7 @@ export async function gridControllerButtonActions(name: navCompactionEvents, dat
      */
     function refresh() {
         const service = getDataControllerByName(dataSet).service;
-        service.reloadData();
+        //service.reloadData();
     }
 
     switch (name) {
