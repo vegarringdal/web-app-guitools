@@ -4,6 +4,7 @@ import { transformData } from "./transformData";
 import { oracleArrayToJsonProxy } from "./oracleArrayToJsonProxy";
 import { FilterArgument } from "@simple-html/datasource";
 import { getAccessToken } from "./getAzureAuth";
+import { flushSync } from "react-dom";
 
 /**
  * fetches data by streaming to client, uses my custom api service
@@ -21,14 +22,14 @@ export async function fetchStreamData(
     let fetchedRows = 0;
     let metaData = null;
     const metadataObj: any = {};
-
+    let count = 0;
     try {
         const response = await fetch(httpUrl, {
             method: "POST",
             credentials: "include",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + await getAccessToken()
+                Authorization: "Bearer " + (await getAccessToken())
             },
             body: query ? JSON.stringify(query) : null
         });
@@ -46,7 +47,7 @@ export async function fetchStreamData(
             let cache = "";
 
             let firstCall = true;
-
+        
             while (true) {
                 const { value, done } = await reader.read();
 
@@ -100,6 +101,10 @@ export async function fetchStreamData(
                                 transformData(metaData, data);
                                 const converted = oracleArrayToJsonProxy(metaData, metadataObj, data);
                                 callback({ type: "data", data: converted });
+                                count++;
+                                if (count % 50 === 0) {
+                                    callback({ type: "length", data: count });
+                                }
                             }
 
                             buffer = "";
@@ -140,8 +145,15 @@ export async function fetchStreamData(
         callback({ type: "error", data: e });
     }
 
-    callback({ type: "length", data: fetchedRows });
+    callback({ type: "length", data: count });
     callback({ type: "time-total", data: performance.now() - t0 });
+
+    await new Promise<void>((resolve) => {
+        // so count gets to update
+        setTimeout(() => {
+            resolve();
+        }, 30);
+    });
 }
 
 // callback type

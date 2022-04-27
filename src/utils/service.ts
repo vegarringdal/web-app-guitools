@@ -55,7 +55,7 @@ export class Service {
         const primaryKey = getApiConfig(this.dataControllerName).api.primaryKey;
 
         const primaryKeys: any[] = [];
-        if(!updateOnly){
+        if (!updateOnly) {
             controller.dataSource.setData([]);
         } else {
             const rows = controller.dataSource.getAllData();
@@ -63,7 +63,6 @@ export class Service {
                 primaryKeys.push(r[primaryKey]);
             });
         }
-       
 
         const error = await this.fetchData(
             this.generateQueryUrlParams(httpApiConfig.query_url + apiName, false),
@@ -95,7 +94,6 @@ export class Service {
         });
     }
 
-
     /**
      * default update, lo logic, this needs to be done before and after
      * @param data
@@ -120,7 +118,7 @@ export class Service {
                 credentials: "include",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": "Bearer " + await getAccessToken()
+                    Authorization: "Bearer " + (await getAccessToken())
                 },
                 body: JSON.stringify(data)
             });
@@ -239,20 +237,11 @@ export class Service {
 
         let fetchError = false;
         this.lastRequest = new Date();
+        const rows: any = [];
 
         await fetchStreamData(urlPathAndParams, query, (res) => {
             if (res.type === "data") {
-                const dataContainer = controller.dataContainer;
-                if (!updateOnly && !primaryKey) {
-                    dataContainer.setData([res.data], true);
-                } else {
-                    const index = primaryKeys.indexOf(res.data[primaryKey]);
-                    if (index !== -1) {
-                        dataContainer.replace([res.data], index, 1);
-                    } else {
-                        dataContainer.setData([res.data], true);
-                    }
-                }
+                rows.push(res.data);
             }
 
             if (res.type === "length") {
@@ -276,8 +265,22 @@ export class Service {
             }
         });
 
+        const dataContainer = controller.dataContainer;
+        if (!updateOnly && !primaryKeys.length) {
+            dataContainer.setData(rows, true);
+        } else {
+            rows.forEach((row: any) => {
+                // this will be slow..
+                const index = primaryKeys.indexOf(row[primaryKey]);
+                if (index !== -1) {
+                    primaryKeys.splice(index, 1);
+                    dataContainer.replace([row], index, 1);
+                } else {
+                    dataContainer.setData([row], true);
+                }
+            });
+        }
+
         return fetchError;
     }
-
- 
 }
