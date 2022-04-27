@@ -8,6 +8,7 @@ import { ServiceCallbackType } from "./ServiceCallbackType";
 import { httpApiConfig } from "./httpApiConfig";
 import { getApiConfig } from "./apiConfig";
 import { reSelectCurrentEntityAndRefreshDs } from "./reSelectCurrentEntity";
+import { getAccessToken } from "./getAzureAuth";
 
 export class Service {
     callbackFn: ServiceCallbackType;
@@ -118,7 +119,8 @@ export class Service {
                 method: "POST",
                 credentials: "include",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + await getAccessToken()
                 },
                 body: JSON.stringify(data)
             });

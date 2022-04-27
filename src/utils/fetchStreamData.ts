@@ -3,6 +3,7 @@
 import { transformData } from "./transformData";
 import { oracleArrayToJsonProxy } from "./oracleArrayToJsonProxy";
 import { FilterArgument } from "@simple-html/datasource";
+import { getAccessToken } from "./getAzureAuth";
 
 /**
  * fetches data by streaming to client, uses my custom api service
@@ -26,7 +27,8 @@ export async function fetchStreamData(
             method: "POST",
             credentials: "include",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + await getAccessToken()
             },
             body: query ? JSON.stringify(query) : null
         });

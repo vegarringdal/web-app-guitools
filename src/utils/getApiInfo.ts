@@ -1,7 +1,7 @@
 import { guiStateController } from "../state/guiStateController";
 import { getApiInfoCallbackType } from "./getApiInfoCallbackType";
+import { getAccessToken } from "./getAzureAuth";
 import { httpApiConfig } from "./httpApiConfig";
-
 
 export async function getApiInfo(apiName: string, callback: getApiInfoCallbackType) {
     callback({
@@ -14,7 +14,8 @@ export async function getApiInfo(apiName: string, callback: getApiInfoCallbackTy
         method: "GET",
         credentials: "include",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + await getAccessToken()
         },
         body: null
     });
