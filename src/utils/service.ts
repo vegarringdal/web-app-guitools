@@ -273,7 +273,6 @@ export class Service {
                 // this will be slow..
                 const index = primaryKeys.indexOf(row[primaryKey]);
                 if (index !== -1) {
-                    primaryKeys.splice(index, 1);
                     dataContainer.replace([row], index, 1);
                 } else {
                     dataContainer.setData([row], true);

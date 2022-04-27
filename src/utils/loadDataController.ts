@@ -12,7 +12,7 @@ export async function loadDataController(apiName: string) {
     const metadata: apiType = await getApiInfo(apiName, getApiInfoCallback);
 
     setApiConfig(apiName, metadata);
-    const dataContainer = new DataContainer();
+    const dataContainer = new DataContainer(metadata.api.primaryKey);
     const dataSource = new Datasource(dataContainer);
     const service = new Service(apiName);
 
