@@ -9,18 +9,48 @@ import { GridInterface } from "@simple-html/grid";
 import type { GridConfig } from "@simple-html/grid/dist/types";
 import { Service } from "./service";
 import { dataStateController } from "../state/dataStateController";
+import { ApiColumn } from "../../../rad-common/src/utils/ApiInterface";
 
 export async function loadDataController(apiName: string) {
     const metadata: apiType = await getApiInfo(apiName, getApiInfoCallback);
-    console.log(metadata.api);
     setApiConfig(apiName, metadata);
 
+    const cols: Record<string, ApiColumn> = {};
+    metadata.api.columns.forEach((col) => {
+        cols[col.name] = col;
+    });
+
     const EntityHandlerOverride = class extends EntityHandler {
-        
+        get(target: any, prop: string) {
+            switch (true) {
+                case cols[prop]?.isCheckbox:
+                    return target[prop] === cols[prop].checkboxChecked ? true : false;
+                    break;
+                default:
+                    return super.get(target, prop);
+            }
+        }
+        set(obj: any, prop: string, value: any) {
+            switch (true) {
+                case cols[prop]?.isCheckbox:
+                    return super.set(
+                        obj,
+                        prop,
+                        value === "true" || value === true || value === cols[prop].checkboxChecked
+                            ? cols[prop].checkboxChecked
+                            : cols[prop].checkboxUnchecked
+                    );
+                    break;
+
+                default:
+                    return super.set(obj, prop, value);
+            }
+        }
     };
 
     const dataContainer = new DataContainer(metadata.api.primaryKey);
     dataContainer.overrideEntityHandler(EntityHandlerOverride);
+
     const dataSource = new Datasource(dataContainer);
     const service = new Service(apiName);
 
@@ -35,7 +65,7 @@ export async function loadDataController(apiName: string) {
                     readonly: !metadata.apiRoles.UPDATABLE_COLUMNS.includes(col.name),
                     filterable: {},
                     sortable: {},
-                    type: col.isCheckbox ? 'boolean' : col.type,
+                    type: col.isCheckbox ? "boolean" : col.type,
                     focusButton: col.parentViewApi !== undefined,
                     focusButtonIfCellReadonly: true,
                     focusButtonIfGridReadonly: false
