@@ -66,6 +66,7 @@ export async function loadDataController(apiName: string) {
                     sortable: {},
                     type: col.isCheckbox ? "boolean" : col.type,
                     focusButton: col.parentViewApi !== undefined,
+                    stopManualEdit: col.parentViewApi !== undefined,
                     focusButtonIfCellReadonly: true,
                     focusButtonIfGridReadonly: false
                 }
@@ -86,25 +87,67 @@ export async function loadDataController(apiName: string) {
 
     const eventHandler = {
         controllerName: apiName,
+        lastCopyEvent: null as any,
         handleEvent: function (event: any) {
-            const dataState = dataStateController.getState();
-            const attribute = event?.data?.cell?.attribute;
+            if (event.type === "focus-button") {
+                const dataState = dataStateController.getState();
+                const attribute = event?.data?.cell?.attribute;
 
-            if (attribute && this.controllerName) {
-                const columns = getApiConfig(this.controllerName).api.columns;
-                const col = columns.filter((x) => {
-                    return x.name === attribute;
-                })?.[0];
+                if (attribute && this.controllerName) {
+                    const columns = getApiConfig(this.controllerName).api.columns;
+                    const col = columns.filter((x) => {
+                        return x.name === attribute;
+                    })?.[0];
 
-                if (col && col.parentViewApi) {
-                    dataState.activateRelatedDialog(
-                        this.controllerName,
-                        col.parentTitle as string,
-                        col.parentViewApi as string,
-                        col.parentFrom as string,
-                        col.parentTo as string,
-                        col.parentColumnsFromTo as string[][]
-                    );
+                    if (col && col.parentViewApi) {
+                        dataState.activateRelatedDialog(
+                            this.controllerName,
+                            col.parentTitle as string,
+                            col.parentViewApi as string,
+                            col.parentFrom as string,
+                            col.parentTo as string,
+                            col.parentColumnsFromTo as string[][]
+                        );
+                    }
+                }
+            }
+
+            if (event.type === "copy-cell") {
+                const attribute = event?.data?.cell?.attribute || "-------------";
+                const rowData = event?.data?.rowData[attribute];
+                if (rowData) {
+                    const rowData = event?.data?.rowData;
+                    const data: any = {};
+                    const keys = metadata.api.columns.map((e) => e.name);
+                    keys.forEach((key) => {
+                        data[key] = rowData[key];
+                    });
+                    this.lastCopyEvent = {
+                        data,
+                        attribute
+                    };
+                }
+            }
+            if (event.type === "paste-into-selected-rows-in-selected-column") {
+                const attribute = event?.data?.cell?.attribute || "-------------";
+                const rowData = event?.data?.rowData;
+                if (this.lastCopyEvent && this.lastCopyEvent.attribute === attribute) {
+                    const apiColumns = getApiConfig(this.controllerName).api.columns;
+                    const col = apiColumns.filter((x) => {
+                        return x.name === attribute;
+                    })?.[0];
+
+                    // we need to update linked
+                    col.parentColumnsFromTo?.forEach(([_, column]) => {
+                        const valueToUse = this.lastCopyEvent.data[column];
+                        const selectedRows = gridInterface.getSelectedRows();
+                        const rows = gridInterface.getDatasource().getRows();
+                        selectedRows.forEach((rowNo: number) => {
+                            if (rows[rowNo]) {
+                                rows[rowNo][column] = valueToUse;
+                            }
+                        });
+                    });
                 }
             }
 
