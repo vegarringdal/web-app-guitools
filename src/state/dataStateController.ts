@@ -1,16 +1,20 @@
 import create from "zustand";
 
 type dataStateControllerType = {
-    mainDataControllerName: string;
-    relatedData: string;
-    relationColumn: string;
-    insertFromColumn: string;
+    controllerName: string;
+    parentViewApi: string;
+    parentTitle:string,
+    parentFrom: string;
+    parentTo: string;
+    parentColumnsFromTo?: string[][];
     relatedDialogActivated: boolean;
     activateRelatedDialog: (
         controllerName: string,
-        relatedData: string,
-        insertFromColumn: string,
-        relationColumn: string
+        parentViewApi: string,
+        parentTitle:string,
+        parentFrom: string,
+        parentTo: string,
+        parentColumnsFromTo: string[][]
     ) => void;
     deactivateRelatedDialog: () => void;
 };
@@ -20,18 +24,22 @@ type dataStateControllerType = {
  * we use this to controll the related dialog
  */
 export const dataStateController = create<dataStateControllerType>((set) => ({
-    mainDataControllerName: "",
-    relatedData: "",
+    controllerName: "",
+    parentViewApi: "",
+    parentTitle:"",
     relatedDialogActivated: false,
-    relationColumn: "",
-    insertFromColumn: "",
-    activateRelatedDialog: (controllerName, relatedData: string, insCol: string, relCol: string) =>
+    parentFrom: "",
+    parentTo: "",
+    parentColumnsFromTo:[],
+    activateRelatedDialog: (controllerName:string, parentTitle:string, parentViewApi: string, parentFrom: string, parentTo: string, parentColumnsFromTo:string[][]) =>
         set(() => ({
-            mainDataControllerName: controllerName,
+            controllerName: controllerName,
+            parentTitle: parentTitle,
+            parentViewApi: parentViewApi,
+            parentFrom: parentFrom,
+            parentTo: parentTo,
+            parentColumnsFromTo: parentColumnsFromTo,
             relatedDialogActivated: true,
-            relatedData: relatedData,
-            relationColumn: relCol,
-            insertFromColumn: insCol
         })),
     deactivateRelatedDialog: () => set(() => ({ relatedDialogActivated: false }))
 }));
