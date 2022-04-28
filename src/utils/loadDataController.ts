@@ -128,16 +128,17 @@ export async function loadDataController(apiName: string) {
                     };
                 }
             }
+
             if (event.type === "paste-into-selected-rows-in-selected-column") {
                 const attribute = event?.data?.cell?.attribute || "-------------";
-                const rowData = event?.data?.rowData;
+
                 if (this.lastCopyEvent && this.lastCopyEvent.attribute === attribute) {
                     const apiColumns = getApiConfig(this.controllerName).api.columns;
                     const col = apiColumns.filter((x) => {
                         return x.name === attribute;
                     })?.[0];
 
-                    // we need to update linked
+                    // we need to update linked, but just the "too"
                     col.parentColumnsFromTo?.forEach(([_, column]) => {
                         const valueToUse = this.lastCopyEvent.data[column];
                         const selectedRows = gridInterface.getSelectedRows();
