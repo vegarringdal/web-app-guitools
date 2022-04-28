@@ -41,7 +41,6 @@ export async function loadDataController(apiName: string) {
                             : cols[prop].checkboxUnchecked
                     );
                     break;
-
                 default:
                     return super.set(obj, prop, value);
             }
