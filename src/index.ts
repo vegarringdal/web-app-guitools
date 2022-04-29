@@ -15,6 +15,8 @@ export { ProfileDialog } from "./components/ProfileDialog";
 export { RelatedDataDialog } from "./components/RelatedDataDialog";
 export { SimpleHtmlGrid } from "./components/SimpleHtmlGrid";
 export { AuthLoader } from "./components/AuthLoader";
+export { ApiLoader } from "./components/ApiLoader";
+
 
 /**
  * State
