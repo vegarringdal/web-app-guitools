@@ -29,64 +29,60 @@ export function RelatedDataDialog() {
     } else {
         const gridInterface = controller.gridInterface;
         return (
-            <div className="flex flex-row h-full mt-2 w-full">
-                return (
-                <div className="fixed grid w-full h-full items-center justify-center fadeIn z-[5001] bg-gray-50/50 fadeIn">
-                    <div className="relative block relatedGrid bg-gray-100 dark:bg-gray-800">
-                        <span className="m-auto block text-center text-2xl bg-gray-300 p-2 dark:bg-gray-700 dark:text-white">
-                            {"Select"}
-                        </span>
+            <div className="top-0 fixed grid w-full h-full items-center justify-center fadeIn z-[6001] bg-gray-50/50 fadeIn">
+                <div className="relative block relatedGrid bg-gray-100 dark:bg-gray-800 flex flex-col">
+                    <span className="w-full block bg-gray-300 p-1 text-center text-base dark:bg-gray-700 dark:text-white mb-1">
+                        {dataState.parentTitle}
+                    </span>
 
-                        <div className="absolute top-10 right-0 left-0 bottom-10 mt-2">
-                            <div className="flex h-full">
-                                <SimpleHtmlGrid
-                                    className="simple-html-grid flex-grow m-3 mb-5"
-                                    interface={getDataControllerByName(dataState.parentViewApi).gridInterface}
-                                ></SimpleHtmlGrid>
-                            </div>
-                        </div>
+                    <div className="flex flex-grow">
+                        <SimpleHtmlGrid
+                            className="simple-html-grid flex-grow"
+                            interface={gridInterface}
+                        ></SimpleHtmlGrid>
+                    </div>
 
-                        <div className="absolute bottom-2 left-0 right-0 flex">
-                            <button
-                                className="block m-auto bg-gray-200 dark:bg-gray-700 p-2 w-36 hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none dark:text-blue-400 font-semibold"
-                                onClick={() => {
-                                    const entity = getDataControllerByName(dataState.parentViewApi).dataSource
-                                        .currentEntity;
-                                    if (entity) {
-                                        const dataState = dataStateController.getState();
-                                        const mainDataController = getDataControllerByName(dataState.controllerName);
-                                        const mainEntity = mainDataController.dataSource.currentEntity;
-                                        mainEntity[dataState.parentTo] = entity[dataState.parentFrom];
-                                        dataState.parentColumnsFromTo?.forEach(([from, to]) => {
-                                            if (from && to) {
-                                                mainEntity[to] = entity[from];
-                                            }
-                                        });
-                                        mainDataController.gridInterface.updateRowCells();
-                                        dataState.deactivateRelatedDialog();
-                                    } else {
-                                    }
-                                }}
-                            >
-                                Select
-                            </button>
+                    <div className="bottom-2 left-0 right-0 flex mt-1 mb-1">
+                        <div className="flex-1 bottom-2 left-0 right-0 flex"></div>
 
-                            <button
-                                className="block m-auto bg-gray-200 dark:bg-gray-700 p-2 w-36 hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none dark:text-blue-400 font-semibold"
-                                onClick={async () => {
-                                    const controller = getDataControllerByName(controllerName);
-                                    controller.service.loadAll({}, true);
-                                }}
-                            >
-                                Reload
-                            </button>
-                            <button
-                                className="block m-auto bg-gray-200 dark:bg-gray-700 p-2 w-36 hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none dark:text-blue-400 font-semibold"
-                                onClick={() => dataState.deactivateRelatedDialog()}
-                            >
-                                Close
-                            </button>
-                        </div>
+                        <button
+                            className="block  bg-gray-200 dark:bg-gray-700 p-2 w-36 hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none dark:text-blue-400 font-semibold ml-1"
+                            onClick={async () => {
+                                const controller = getDataControllerByName(controllerName);
+                                controller.service.loadAll({}, true);
+                            }}
+                        >
+                            Reload
+                        </button>
+                        <button
+                            className="block  bg-gray-200 dark:bg-gray-700 p-2 w-36 hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none dark:text-blue-400 font-semibold ml-1"
+                            onClick={() => {
+                                const entity = getDataControllerByName(dataState.parentViewApi).dataSource
+                                    .currentEntity;
+                                if (entity) {
+                                    const dataState = dataStateController.getState();
+                                    const mainDataController = getDataControllerByName(dataState.controllerName);
+                                    const mainEntity = mainDataController.dataSource.currentEntity;
+                                    mainEntity[dataState.parentTo] = entity[dataState.parentFrom];
+                                    dataState.parentColumnsFromTo?.forEach(([from, to]) => {
+                                        if (from && to) {
+                                            mainEntity[to] = entity[from];
+                                        }
+                                    });
+                                    mainDataController.gridInterface.updateRowCells();
+                                    dataState.deactivateRelatedDialog();
+                                } else {
+                                }
+                            }}
+                        >
+                            Select
+                        </button>
+                        <button
+                            className="block  bg-gray-200 dark:bg-gray-700 p-2 w-36 hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none dark:text-blue-400 font-semibold ml-1 mr-1"
+                            onClick={() => dataState.deactivateRelatedDialog()}
+                        >
+                            Close
+                        </button>
                     </div>
                 </div>
             </div>
