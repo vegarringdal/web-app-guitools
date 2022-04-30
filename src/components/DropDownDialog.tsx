@@ -15,9 +15,12 @@ export function DropDownDialog() {
     const [reload, setReload] = useState(true);
     const dataState = dataStateController();
 
-    /*     if (!dataState.relatedDialogActivated) {
+    // disable for now
+    return null;
+
+    if (!dataState.relatedDialogActivated && 1 === 1) {
         return null;
-    } */
+    }
 
     const style = {
         top: 50,
