@@ -33,7 +33,10 @@ export function GridControllerButtons(props: { dataSet: string }) {
         return ds?.length() || 0;
     }
 
-    function disableIfLoadingOrNoData() {
+    function disableIfLoadingOrNoData(skipRule?: boolean) {
+        if(skipRule === true){
+            return !skipRule
+        }
         return serviceState.loadingDataDialogActived || datasourceSize() < 1;
     }
 
@@ -56,6 +59,7 @@ export function GridControllerButtons(props: { dataSet: string }) {
     function disableIfLoadingOrMainPage() {
         return serviceState.loadingDataDialogActived;
     }
+    console.log("x")
 
     /**
      * render
@@ -169,9 +173,9 @@ export function GridControllerButtons(props: { dataSet: string }) {
                 className={
                     "mt-2 m-1 p-1 bg-gray-200 w-28  hover:bg-gray-300 focus:outline-none  dark:bg-gray-700  dark:hover:bg-gray-600 dark:text-blue-400 font-semibold" +
                     hiddenStyleOrDisabled("edit") +
-                    disableStyle(disableIfLoadingOrNoData() || !roles.UPDATE)
+                    disableStyle(disableIfLoadingOrNoData(roles.UPDATE) || !roles.UPDATE)
                 }
-                disabled={disableIfLoadingOrNoData() || !roles.UPDATE}
+                disabled={disableIfLoadingOrNoData(roles.UPDATE) || !roles.UPDATE}
                 onClick={() => gridControllerButtonActions("edit", props.dataSet)}
             >
                 Edit
