@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { getDataControllerByName } from "../utils/getDataControllerByName";
-import { dataStateController } from "../state/dataStateController";
+import { dropdownDialogStateController } from "../state/dropdownDialogStateController";
 import { SimpleHtmlGrid } from "./SimpleHtmlGrid";
 import { loadDataController } from "../utils/loadDataController";
 
@@ -13,10 +13,7 @@ import { loadDataController } from "../utils/loadDataController";
  */
 export function DropDownDialog() {
     const [reload, setReload] = useState(true);
-    const dataState = dataStateController();
-
-    // disable for now
-    return null;
+    const dataState = dropdownDialogStateController();
 
     if (!dataState.relatedDialogActivated && 1 === 1) {
         return null;
@@ -29,7 +26,7 @@ export function DropDownDialog() {
         height: 500
     };
 
-    const controllerName = "WEB_USER"; // dataState.parentViewApi;
+    const controllerName = dataState.parentViewApi;
     const controller = getDataControllerByName(controllerName);
     if (!controller.gridInterface) {
         setTimeout(() => {
@@ -57,7 +54,7 @@ export function DropDownDialog() {
                         onClick={() => {
                             const entity = getDataControllerByName(dataState.parentViewApi).dataSource.currentEntity;
                             if (entity) {
-                                const dataState = dataStateController.getState();
+                                const dataState = dropdownDialogStateController.getState();
                                 const mainDataController = getDataControllerByName(dataState.controllerName);
                                 const mainEntity = mainDataController.dataSource.currentEntity;
                                 mainEntity[dataState.parentTo] = entity[dataState.parentFrom];

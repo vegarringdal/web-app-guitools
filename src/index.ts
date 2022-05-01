@@ -21,10 +21,10 @@ export { DropDownDialog } from "./components/DropDownDialog";
 /**
  * State
  */
-export { serviceStateController } from "./state/serviceStateController";
+export { serviceStateController as serviceStateController } from "./state/serviceStateController";
 export { themeStateController } from "./state/themeStateController";
 export { guiStateController } from "./state/guiStateController";
-export { dataStateController } from "./state/dataStateController";
+export { relatedDialogStateController as dataStateController } from "./state/relatedDialogStateController";
 export {
     setLinkState,
     getLinkState,

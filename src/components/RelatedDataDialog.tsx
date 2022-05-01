@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { getDataControllerByName } from "../utils/getDataControllerByName";
-import { dataStateController } from "../state/dataStateController";
+import { relatedDialogStateController } from "../state/relatedDialogStateController";
 import { SimpleHtmlGrid } from "./SimpleHtmlGrid";
 import { loadDataController } from "../utils/loadDataController";
 
@@ -11,7 +11,7 @@ import { loadDataController } from "../utils/loadDataController";
  */
 export function RelatedDataDialog() {
     const [reload, setReload] = useState(true);
-    const dataState = dataStateController();
+    const dataState = relatedDialogStateController();
 
     if (!dataState.relatedDialogActivated) {
         return null;
@@ -60,7 +60,7 @@ export function RelatedDataDialog() {
                                 const entity = getDataControllerByName(dataState.parentViewApi).dataSource
                                     .currentEntity;
                                 if (entity) {
-                                    const dataState = dataStateController.getState();
+                                    const dataState = relatedDialogStateController.getState();
                                     const mainDataController = getDataControllerByName(dataState.controllerName);
                                     const mainEntity = mainDataController.dataSource.currentEntity;
                                     mainEntity[dataState.parentTo] = entity[dataState.parentFrom];

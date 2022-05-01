@@ -1,6 +1,6 @@
 import create from "zustand";
 
-type dataStateControllerType = {
+type RelatedDialogStateType = {
     controllerName: string;
     parentViewApi: string;
     parentTitle:string,
@@ -23,7 +23,7 @@ type dataStateControllerType = {
  * keeps track of datacontroller name and related data
  * we use this to controll the related dialog
  */
-export const dataStateController = create<dataStateControllerType>((set) => ({
+export const relatedDialogStateController = create<RelatedDialogStateType>((set) => ({
     controllerName: "",
     parentViewApi: "",
     parentTitle:"",

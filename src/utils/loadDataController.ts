@@ -8,7 +8,7 @@ import { GridGroupConfig } from "@simple-html/grid/dist/types";
 import { GridInterface } from "@simple-html/grid";
 import type { GridConfig } from "@simple-html/grid/dist/types";
 import { Service } from "./service";
-import { dataStateController } from "../state/dataStateController";
+import { relatedDialogStateController } from "../state/relatedDialogStateController";
 import { ApiColumn } from "../../../rad-common/src/utils/ApiInterface";
 
 export async function loadDataController(apiName: string) {
@@ -90,7 +90,7 @@ export async function loadDataController(apiName: string) {
         lastCopyEvent: null as any,
         handleEvent: function (event: any) {
             if (event.type === "focus-button") {
-                const dataState = dataStateController.getState();
+                const dataState = relatedDialogStateController.getState();
                 const attribute = event?.data?.cell?.attribute;
 
                 if (attribute && this.controllerName) {
