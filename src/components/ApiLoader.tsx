@@ -1,4 +1,4 @@
-import { dataControllerType, getDataControllerByName, loadDataController } from "@rad-tools";
+import { dataControllerType, getDataControllerByName, loadDataController } from "../";
 import { useState } from "react";
 
 export function ApiLoader(props: { controllerName: string; callback: (controller: dataControllerType) => any }) {
