@@ -3,6 +3,9 @@ import "@simple-html/grid";
 import "@simple-html/grid/dist/grid.css";
 import React from "react";
 
+
+/**TODO refactor into functiion component */
+
 /**
  * This is just a grid container, so I can use the vanilla grid in react
  * this also added some features like doubleclick on grid row (TODO: edit to look for URL in header)
