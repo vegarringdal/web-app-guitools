@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { getDataControllerByName } from "../utils/getDataControllerByName";
 import { dropdownDialogStateController } from "../state/dropdownDialogStateController";
 import { SimpleHtmlGrid } from "./SimpleHtmlGrid";
@@ -14,17 +14,35 @@ import { loadDataController } from "../utils/loadDataController";
 export function DropDownDialog() {
     const [reload, setReload] = useState(true);
     const dataState = dropdownDialogStateController();
-
-    if (!dataState.relatedDialogActivated && 1 === 1) {
+    
+    if (!dataState.relatedDialogActivated) {
         return null;
     }
+    
+    const refElement = useRef(null);
 
     const style = {
-        top: 50,
-        left: 50,
-        width: 300,
-        height: 500
+        top: dataState.top,
+        left: dataState.left,
+        width: dataState.width,
+        height: dataState.height
     };
+
+    useEffect(() => {
+        const element = refElement.current as any;
+        if (element) {
+            // this will keep it within screen, but maybe I should move bottom top of input when it does not fix under?
+            const rect = element.getBoundingClientRect();
+            const thisInnerHeight = window.innerHeight;
+            const thisInnerWidth = window.innerWidth;
+            if (rect.bottom > thisInnerHeight) {
+                style.top = element.offsetTop - (rect.bottom - thisInnerHeight);
+            }
+            if (rect.right > thisInnerWidth) {
+                style.left = element.offsetLeft - (rect.right - thisInnerWidth);
+            }
+        }
+    });
 
     const controllerName = dataState.parentViewApi;
     const controller = getDataControllerByName(controllerName);
@@ -41,6 +59,7 @@ export function DropDownDialog() {
         gridInterface.config.panelHeight = 0;
         return (
             <div
+                ref={refElement}
                 style={style}
                 className="absolute block bg-gray-100 dark:bg-gray-800 z-[6000] shadow-2xl border border-gray-900 flex flex-col"
             >
