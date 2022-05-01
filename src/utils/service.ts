@@ -14,6 +14,7 @@ export class Service {
     callbackFn: ServiceCallbackType;
     dataControllerName: string;
     lastRequest: any;
+    metaData: Record<string, any> = {};
 
     constructor(dataControllerName: string, callbackFn: ServiceCallbackType = serviceCallback) {
         this.dataControllerName = dataControllerName;
@@ -242,6 +243,10 @@ export class Service {
         await fetchStreamData(urlPathAndParams, query, (res) => {
             if (res.type === "data") {
                 rows.push(res.data);
+            }
+
+            if (res.type === "meta") {
+                this.metaData = res.data;
             }
 
             if (res.type === "length") {

@@ -21,6 +21,7 @@ export async function fetchStreamData(
     const t0 = performance.now();
     let fetchedRows = 0;
     let metaData = null;
+    const metadataNo: any = {};
     const metadataObj: any = {};
     let count = 0;
     try {
@@ -94,12 +95,13 @@ export async function fetchStreamData(
                             if (!metaData) {
                                 metaData = data;
                                 data.forEach((x: any, i: number) => {
-                                    metadataObj[x.name] = i;
+                                    metadataNo[x.name] = i;
+                                    metadataObj[x.name] = x
                                 });
-                                callback({ type: "meta", data: metaData });
+                                callback({ type: "meta", data: metadataObj });
                             } else {
                                 transformData(metaData, data);
-                                const converted = oracleArrayToJsonProxy(metaData, metadataObj, data);
+                                const converted = oracleArrayToJsonProxy(metaData, metadataNo, data);
                                 callback({ type: "data", data: converted });
                                 count++;
                                 if (count % 50 === 0) {
