@@ -14,7 +14,7 @@ export function LoadingDialog() {
     }
 
     return (
-        <div className="fixed grid w-full h-full items-center justify-center fadeIn z-[5010] bg-gray-50/50">
+        <div className="fixed grid w-full h-full items-center justify-center fadeIn z-[7010] bg-gray-50/50">
             <div className="block w-96 h-80 bg-gray-100 dark:bg-gray-800">
                 <span className="m-auto block text-center text-2xl bg-gray-300 p-2 dark:bg-gray-700 dark:text-white">
                     Please wait
