@@ -12,6 +12,15 @@ export function ErrorDialog() {
         return null;
     }
 
+    let error = serviceState.errorDialogContent;
+    if (typeof serviceState.errorDialogContent !== "string") {
+        error = (serviceState.errorDialogContent as any)?.message;
+        if (typeof (serviceState.errorDialogContent as any)?.message !== "string") {
+            error = "unknown, see console";
+            console.log(serviceState.errorDialogContent);
+        }
+    }
+
     return (
         <div className="fixed grid w-full h-full items-center justify-center fadeIn z-[5010] bg-gray-50/50">
             <div className="relative block w-96 h-80 bg-gray-100 dark:bg-gray-800">
@@ -24,7 +33,7 @@ export function ErrorDialog() {
                 </span>
 
                 <span className="flex-1 m-auto block text-center mt-4 whitespace-pre-line dark:text-white">
-                    {serviceState.errorDialogContent || "s"}
+                    {error}
                 </span>
                 <div className="absolute bottom-2 left-0 right-0">
                     <button
