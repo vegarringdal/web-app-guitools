@@ -6,7 +6,7 @@ import { getApiInfoCallback } from "./getApiInfoCallback";
 import { DataContainer, Datasource, EntityHandler } from "@simple-html/datasource";
 import { GridGroupConfig } from "@simple-html/grid/dist/types";
 import { GridInterface } from "@simple-html/grid";
-import type { GridConfig } from "@simple-html/grid/dist/types";
+import type { GridConfig, CellConfig } from "@simple-html/grid/dist/types";
 import { Service } from "./service";
 import { relatedDialogStateController } from "../state/relatedDialogStateController";
 import { ApiColumn } from "../../../rad-common/src/utils/ApiInterface";
@@ -53,34 +53,48 @@ export async function loadDataController(apiName: string) {
     const dataSource = new Datasource(dataContainer);
     const service = new Service(apiName);
 
-    const columns = metadata.api.columns || [];
-    const colConfig = columns.map((col) => {
+    let optionalCells = false;
+    function col(col: ApiColumn) {
+        let readonly = !metadata.apiRoles.UPDATABLE_COLUMNS.includes(col.name);
+        if (col.readOnlyGrid) {
+            readonly = true;
+        }
+
+        const colConfig = {
+            header: col.label || col.name,
+            attribute: col.name,
+            readonly: readonly,
+            filterable: {},
+            sortable: {},
+            type: col.isCheckbox ? "boolean" : col.type,
+            focusButton: col.parentViewApi !== undefined,
+            stopManualEdit: col.parentViewApi !== undefined,
+            focusButtonIfCellReadonly: true,
+            focusButtonIfGridReadonly: false
+        } as CellConfig;
+
+        if (optionalCells) {
+            return colConfig;
+        }
+
         return {
             width: 100,
-            rows: [
-                {
-                    header: col.label || col.name,
-                    attribute: col.name,
-                    readonly: !metadata.apiRoles.UPDATABLE_COLUMNS.includes(col.name),
-                    filterable: {},
-                    sortable: {},
-                    type: col.isCheckbox ? "boolean" : col.type,
-                    focusButton: col.parentViewApi !== undefined,
-                    stopManualEdit: col.parentViewApi !== undefined,
-                    focusButtonIfCellReadonly: true,
-                    focusButtonIfGridReadonly: false
-                }
-            ]
+            rows: [colConfig]
         } as GridGroupConfig;
-    });
+    }
 
+    const columns = metadata.api.columns || [];
+    const colConfig = columns.filter((e) => e.removeFromGrid !== true && e.setAsOptionalInGrid !== true).map(col);
+
+    optionalCells = true;
     const defaultGrid: GridConfig = {
         cellHeight: 20,
         panelHeight: 25,
         footerHeight: 35,
         readonly: true,
         selectionMode: "multiple",
-        groups: colConfig as any
+        optionalCells: columns.filter((e) => e.setAsOptionalInGrid === true).map(col) as CellConfig[],
+        groups: colConfig as GridGroupConfig[]
     };
 
     const gridInterface = new GridInterface(defaultGrid, dataSource);
