@@ -53,8 +53,7 @@ export async function loadDataController(apiName: string) {
     const dataSource = new Datasource(dataContainer);
     const service = new Service(apiName);
 
-    let optionalCells = false;
-    function col(col: ApiColumn) {
+    function col(col: ApiColumn, optionalCells = false) {
         let readonly = !metadata.apiRoles.UPDATABLE_COLUMNS.includes(col.name);
         if (col.readOnlyGrid) {
             readonly = true;
@@ -74,6 +73,7 @@ export async function loadDataController(apiName: string) {
         } as CellConfig;
 
         if (optionalCells) {
+            // we only need very simple config here, for column chooser
             return colConfig;
         }
 
@@ -84,16 +84,19 @@ export async function loadDataController(apiName: string) {
     }
 
     const columns = metadata.api.columns || [];
-    const colConfig = columns.filter((e) => e.removeFromGrid !== true && e.setAsOptionalInGrid !== true).map(col);
+    const colConfig = columns
+        .filter((e) => e.removeFromGrid !== true && e.setAsOptionalInGrid !== true)
+        .map((e) => col(e));
 
-    optionalCells = true;
+    // todo, should I allow more advanced setup with api, like full gridconfig?
+
     const defaultGrid: GridConfig = {
         cellHeight: 20,
         panelHeight: 25,
         footerHeight: 35,
         readonly: true,
         selectionMode: "multiple",
-        optionalCells: columns.filter((e) => e.setAsOptionalInGrid === true).map(col) as CellConfig[],
+        optionalCells: columns.filter((e) => e.setAsOptionalInGrid === true).map((e) => col(e, true)) as CellConfig[],
         groups: colConfig as GridGroupConfig[]
     };
 
@@ -104,6 +107,8 @@ export async function loadDataController(apiName: string) {
         lastCopyEvent: null as any,
         handleEvent: function (event: any) {
             if (event.type === "focus-button") {
+                // for drop downs
+                // todo, need to be able to switch betwen 3 types
                 const dataState = relatedDialogStateController.getState();
                 const attribute = event?.data?.cell?.attribute;
 
@@ -126,6 +131,7 @@ export async function loadDataController(apiName: string) {
                 }
             }
 
+            // helper event for copy/paste
             if (event.type === "copy-cell") {
                 const attribute = event?.data?.cell?.attribute || "-------------";
                 const rowData = event?.data?.rowData[attribute];
@@ -143,6 +149,7 @@ export async function loadDataController(apiName: string) {
                 }
             }
 
+            // helper event for copy/paste
             if (event.type === "paste-into-selected-rows-in-selected-column") {
                 const attribute = event?.data?.cell?.attribute || "-------------";
 
