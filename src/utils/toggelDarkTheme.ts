@@ -1,4 +1,3 @@
-
 export function toggelDarkTheme(darktheme: boolean) {
     if (darktheme) {
         document.getElementsByTagName("HTML")[0].className = "dark";

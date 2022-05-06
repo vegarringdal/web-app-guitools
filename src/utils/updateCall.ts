@@ -2,7 +2,6 @@ import { Entity } from "@simple-html/datasource";
 import { GridInterface } from "@simple-html/grid";
 import { ApiInterface } from "@rad-common";
 import { Service } from "./service";
-import { DataTypes } from "@simple-html/datasource";
 import { getModifiedFilter } from "./getModifiedFilter";
 
 export async function updateCall(
@@ -104,11 +103,7 @@ export async function updateCall(
 
         // helper for getting modified columns only
         if (tableConfig.modified && service.getLastRequestTimestamp()) {
-            const query = getModifiedFilter(
-                defaultQuery,
-                tableConfig.modified,
-                service.getLastRequestTimestamp()
-            );
+            const query = getModifiedFilter(defaultQuery, tableConfig.modified, service.getLastRequestTimestamp());
             if (!defaultQuery) {
                 await service.loadAll(query, true);
             } else {

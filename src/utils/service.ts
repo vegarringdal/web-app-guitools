@@ -1,6 +1,5 @@
 import { fetchStreamData } from "./fetchStreamData";
-import { DataTypes, FilterArgument } from "@simple-html/datasource";
-import { generateGridConfig } from "./generateGridConfig";
+import { FilterArgument } from "@simple-html/datasource";
 import { getDataControllerByName } from "./getDataControllerByName";
 import { restApiCallEnd, restApiCallStart } from "./restApiCalls";
 import { serviceCallback } from "./serviceCallback";

@@ -3,7 +3,7 @@ import create from "zustand";
 type dropdownDialogStateType = {
     controllerName: string;
     parentViewApi: string;
-    parentTitle:string,
+    parentTitle: string;
     parentFrom: string;
     parentTo: string;
     parentColumnsFromTo?: string[][];
@@ -15,7 +15,7 @@ type dropdownDialogStateType = {
     activateRelatedDialog: (
         controllerName: string,
         parentViewApi: string,
-        parentTitle:string,
+        parentTitle: string,
         parentFrom: string,
         parentTo: string,
         parentColumnsFromTo: string[][]
@@ -30,16 +30,23 @@ type dropdownDialogStateType = {
 export const dropdownDialogStateController = create<dropdownDialogStateType>((set) => ({
     controllerName: "",
     parentViewApi: "",
-    parentTitle:"",
+    parentTitle: "",
     relatedDialogActivated: false,
     parentFrom: "",
     parentTo: "",
-    parentColumnsFromTo:[],
+    parentColumnsFromTo: [],
     top: 0,
     left: 0,
     width: 300,
     height: 500,
-    activateRelatedDialog: (controllerName:string, parentTitle:string, parentViewApi: string, parentFrom: string, parentTo: string, parentColumnsFromTo:string[][]) =>
+    activateRelatedDialog: (
+        controllerName: string,
+        parentTitle: string,
+        parentViewApi: string,
+        parentFrom: string,
+        parentTo: string,
+        parentColumnsFromTo: string[][]
+    ) =>
         set(() => ({
             controllerName: controllerName,
             parentTitle: parentTitle,
@@ -47,7 +54,7 @@ export const dropdownDialogStateController = create<dropdownDialogStateType>((se
             parentFrom: parentFrom,
             parentTo: parentTo,
             parentColumnsFromTo: parentColumnsFromTo,
-            relatedDialogActivated: true,
+            relatedDialogActivated: true
         })),
     deactivateRelatedDialog: () => set(() => ({ relatedDialogActivated: false }))
 }));

@@ -3,7 +3,7 @@ import create from "zustand";
 type RelatedDialogStateType = {
     controllerName: string;
     parentViewApi: string;
-    parentTitle:string,
+    parentTitle: string;
     parentFrom: string;
     parentTo: string;
     parentColumnsFromTo?: string[][];
@@ -11,7 +11,7 @@ type RelatedDialogStateType = {
     activateRelatedDialog: (
         controllerName: string,
         parentViewApi: string,
-        parentTitle:string,
+        parentTitle: string,
         parentFrom: string,
         parentTo: string,
         parentColumnsFromTo: string[][]
@@ -26,12 +26,19 @@ type RelatedDialogStateType = {
 export const relatedDialogStateController = create<RelatedDialogStateType>((set) => ({
     controllerName: "",
     parentViewApi: "",
-    parentTitle:"",
+    parentTitle: "",
     relatedDialogActivated: false,
     parentFrom: "",
     parentTo: "",
-    parentColumnsFromTo:[],
-    activateRelatedDialog: (controllerName:string, parentTitle:string, parentViewApi: string, parentFrom: string, parentTo: string, parentColumnsFromTo:string[][]) =>
+    parentColumnsFromTo: [],
+    activateRelatedDialog: (
+        controllerName: string,
+        parentTitle: string,
+        parentViewApi: string,
+        parentFrom: string,
+        parentTo: string,
+        parentColumnsFromTo: string[][]
+    ) =>
         set(() => ({
             controllerName: controllerName,
             parentTitle: parentTitle,
@@ -39,7 +46,7 @@ export const relatedDialogStateController = create<RelatedDialogStateType>((set)
             parentFrom: parentFrom,
             parentTo: parentTo,
             parentColumnsFromTo: parentColumnsFromTo,
-            relatedDialogActivated: true,
+            relatedDialogActivated: true
         })),
     deactivateRelatedDialog: () => set(() => ({ relatedDialogActivated: false }))
 }));

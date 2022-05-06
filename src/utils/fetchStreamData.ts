@@ -4,7 +4,6 @@ import { transformData } from "./transformData";
 import { oracleArrayToJsonProxy } from "./oracleArrayToJsonProxy";
 import { FilterArgument } from "@simple-html/datasource";
 import { getAccessToken } from "./getAzureAuth";
-import { flushSync } from "react-dom";
 
 /**
  * fetches data by streaming to client, uses my custom api service
@@ -19,7 +18,6 @@ export async function fetchStreamData(
     callback: streamCallback
 ) {
     const t0 = performance.now();
-    let fetchedRows = 0;
     let metaData = null;
     const metadataNo: any = {};
     const metadataObj: any = {};
@@ -48,7 +46,7 @@ export async function fetchStreamData(
             let cache = "";
 
             let firstCall = true;
-        
+
             while (true) {
                 const { value, done } = await reader.read();
 
@@ -96,7 +94,7 @@ export async function fetchStreamData(
                                 metaData = data;
                                 data.forEach((x: any, i: number) => {
                                     metadataNo[x.name] = i;
-                                    metadataObj[x.name] = x
+                                    metadataObj[x.name] = x;
                                 });
                                 callback({ type: "meta", data: metadataObj });
                             } else {

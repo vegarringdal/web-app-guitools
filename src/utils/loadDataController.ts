@@ -1,6 +1,5 @@
 import { apiType, getApiConfig, setApiConfig } from "./apiConfig";
 import { dataControllerMap } from "./dataControllerMap";
-import { dataControllerType } from "./dataControllerType";
 import { getApiInfo } from "./getApiInfo";
 import { getApiInfoCallback } from "./getApiInfoCallback";
 import { DataContainer, Datasource, EntityHandler } from "@simple-html/datasource";
@@ -160,7 +159,7 @@ export async function loadDataController(apiName: string) {
                     })?.[0];
 
                     // we need to update linked, but just the "too"
-                    col.parentColumnsFromTo?.forEach(([_, column]) => {
+                    col.parentColumnsFromTo?.forEach(([, column]) => {
                         const valueToUse = this.lastCopyEvent.data[column];
                         const selectedRows = gridInterface.getSelectedRows();
                         const rows = gridInterface.getDatasource().getRows();

@@ -15,7 +15,7 @@ export async function getApiInfo(apiName: string, callback: getApiInfoCallbackTy
         credentials: "include",
         headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer " + await getAccessToken()
+            Authorization: "Bearer " + (await getAccessToken())
         },
         body: null
     });

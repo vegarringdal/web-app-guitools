@@ -6,7 +6,6 @@
 import { metaData } from "./fetchStreamData";
 
 export function oracleArrayToJsonProxy(metaData: metaData[], metadataObj: any, row: any[]) {
-
     const proxy = new Proxy(
         { __$r: row, __$m: metaData },
         {
