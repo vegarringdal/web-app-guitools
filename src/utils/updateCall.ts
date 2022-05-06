@@ -37,15 +37,15 @@ export async function updateCall(
             if (row.__controller.__edited && !row.__controller.__isNew) {
                 if (row.__controller.__editedProps[tableConfig.primaryKey]) {
                     // if primary key is edited, then we need to get the old
-                    edits.push(["PRIMARY_KEY_VAR", row.__controller.__originalValues[tableConfig.primaryKey]]);
+                    edits.push(["__$primarykey", row.__controller.__originalValues[tableConfig.primaryKey]]);
                 } else {
-                    edits.push(["PRIMARY_KEY_VAR", row[tableConfig.primaryKey]]);
+                    edits.push(["__$primarykey", row[tableConfig.primaryKey]]);
                 }
                 edits.push(["__$update", 1]);
             }
 
             if (row.__controller.__isNew) {
-                edits.push(["PRIMARY_KEY_VAR", row[tableConfig.primaryKey]]);
+                edits.push(["__$primarykey", row[tableConfig.primaryKey]]);
                 edits.push(["__$insert", 1]);
                 newRows.push(row[tableConfig.primaryKey]);
             }
@@ -65,13 +65,13 @@ export async function updateCall(
                 // same as edits, if primary key was edited before deleting, then we want to use old..
                 if (r.__controller.__editedProps[tableConfig.primaryKey]) {
                     updateInsertDelete.push({
-                        PRIMARY_KEY_VAR: r.__controller.__originalValues[tableConfig.primaryKey],
+                        __$primarykey: r.__controller.__originalValues[tableConfig.primaryKey],
                         __$delete: 1
                     });
                 } else {
                     // not edit, we use default primary key
                     updateInsertDelete.push({
-                        PRIMARY_KEY_VAR: r[tableConfig.primaryKey],
+                        __$primarykey: r[tableConfig.primaryKey],
                         __$delete: 1
                     });
                 }
