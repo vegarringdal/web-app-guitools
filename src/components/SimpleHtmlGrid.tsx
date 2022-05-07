@@ -60,16 +60,6 @@ export class SimpleHtmlGrid extends React.Component {
                 }
             }
         });
-
-        const body = this.myRef.current?.getElementsByClassName("simple-html-grid-body")[0];
-        if (body) {
-            // helper for dropdown
-            body.addEventListener("scroll", function () {
-                if (dropdownDialogStateController.getState().relatedDialogActivated) {
-                    dropdownDialogStateController.setState({ relatedDialogActivated: false });
-                }
-            });
-        }
     }
 
     render() {
