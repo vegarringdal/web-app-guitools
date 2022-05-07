@@ -8,7 +8,8 @@ import { GridInterface } from "@simple-html/grid";
 import type { GridConfig, CellConfig } from "@simple-html/grid/dist/types";
 import { Service } from "./service";
 import { relatedDialogStateController } from "../state/relatedDialogStateController";
-import { ApiColumn } from "../../../rad-common/src/utils/ApiInterface";
+import { ApiColumn } from "@rad-common";
+import { dropdownDialogStateController } from "../state/dropdownDialogStateController";
 
 export async function loadDataController(apiName: string) {
     const metadata: apiType = await getApiInfo(apiName, getApiInfoCallback);
@@ -108,7 +109,7 @@ export async function loadDataController(apiName: string) {
             if (event.type === "focus-button") {
                 // for drop downs
                 // todo, need to be able to switch betwen 3 types
-                const dataState = relatedDialogStateController.getState();
+
                 const attribute = event?.data?.cell?.attribute;
 
                 if (attribute && this.controllerName) {
@@ -118,14 +119,31 @@ export async function loadDataController(apiName: string) {
                     })?.[0];
 
                     if (col && col.parentViewApi) {
-                        dataState.activateRelatedDialog(
-                            this.controllerName,
-                            col.parentTitle as string,
-                            col.parentViewApi as string,
-                            col.parentFrom as string,
-                            col.parentTo as string,
-                            col.parentColumnsFromTo as string[][]
-                        );
+                        if (col.parentViewType === "DROPDOWN") {
+                            const rect = event.data.innerEle.getBoundingClientRect();
+
+                            const controller = dropdownDialogStateController.getState();
+                            // set dropdown posisioned to cell
+                            dropdownDialogStateController.setState({ top: rect.top + rect.height, left: rect.left });
+                            controller.activateRelatedDialog(
+                                this.controllerName,
+                                col.parentTitle as string,
+                                col.parentViewApi as string,
+                                col.parentFrom as string,
+                                col.parentTo as string,
+                                col.parentColumnsFromTo as string[][]
+                            );
+                        } else {
+                            const controller = relatedDialogStateController.getState();
+                            controller.activateRelatedDialog(
+                                this.controllerName,
+                                col.parentTitle as string,
+                                col.parentViewApi as string,
+                                col.parentFrom as string,
+                                col.parentTo as string,
+                                col.parentColumnsFromTo as string[][]
+                            );
+                        }
                     }
                 }
             }

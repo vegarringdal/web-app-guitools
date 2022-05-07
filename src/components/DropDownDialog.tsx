@@ -14,19 +14,8 @@ import { loadDataController } from "../utils/loadDataController";
 export function DropDownDialog() {
     const [reload, setReload] = useState(true);
     const dataState = dropdownDialogStateController();
-    
-    if (!dataState.relatedDialogActivated) {
-        return null;
-    }
-    
-    const refElement = useRef(null);
 
-    const style = {
-        top: dataState.top,
-        left: dataState.left,
-        width: dataState.width,
-        height: dataState.height
-    };
+    const refElement = useRef(null);
 
     useEffect(() => {
         const element = refElement.current as any;
@@ -43,6 +32,17 @@ export function DropDownDialog() {
             }
         }
     });
+
+    if (!dataState.relatedDialogActivated) {
+        return null;
+    }
+
+    const style = {
+        top: dataState.top,
+        left: dataState.left,
+        width: dataState.width,
+        height: dataState.height
+    };
 
     const controllerName = dataState.parentViewApi;
     const controller = getDataControllerByName(controllerName);
