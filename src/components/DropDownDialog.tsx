@@ -30,8 +30,6 @@ export function DropDownDialog() {
             if (rect.right > thisInnerWidth) {
                 style.left = element.offsetLeft - (rect.right - thisInnerWidth);
             }
-
-            debugger
         }
     });
 

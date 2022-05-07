@@ -2,7 +2,7 @@ import { GridInterface } from "@simple-html/grid";
 import "@simple-html/grid";
 import "@simple-html/grid/dist/grid.css";
 import React from "react";
-
+import { dropdownDialogStateController } from "../state/dropdownDialogStateController";
 
 /**TODO refactor into functiion component */
 
@@ -60,6 +60,16 @@ export class SimpleHtmlGrid extends React.Component {
                 }
             }
         });
+
+        const body = this.myRef.current?.getElementsByClassName("simple-html-grid-body")[0];
+        if (body) {
+            // helper for dropdown
+            body.addEventListener("scroll", function () {
+                if (dropdownDialogStateController.getState().relatedDialogActivated) {
+                    dropdownDialogStateController.setState({ relatedDialogActivated: false });
+                }
+            });
+        }
     }
 
     render() {
