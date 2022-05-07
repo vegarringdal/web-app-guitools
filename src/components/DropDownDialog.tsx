@@ -30,8 +30,31 @@ export function DropDownDialog() {
             if (rect.right > thisInnerWidth) {
                 style.left = element.offsetLeft - (rect.right - thisInnerWidth);
             }
+
+            debugger
         }
     });
+
+    function resizeHandler(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+        const x = event.clientX;
+        const y = event.clientY;
+        function moveHandler(e: any) {
+            const resizeX = e.clientX - x;
+            const resizeY = e.clientY - y;
+            const height = dataState.height;
+            const width = dataState.width;
+
+            dropdownDialogStateController.setState({ height: height + resizeY, width: width + resizeX });
+        }
+
+        function upHandler() {
+            window.removeEventListener("mouseup", upHandler);
+            window.removeEventListener("mousemove", moveHandler);
+        }
+
+        window.addEventListener("mouseup", upHandler);
+        window.addEventListener("mousemove", moveHandler);
+    }
 
     if (!dataState.relatedDialogActivated) {
         return null;
@@ -106,6 +129,10 @@ export function DropDownDialog() {
                     >
                         Close
                     </button>
+                    <div
+                        className="absolute p-1 z-50 bottom-0 right-0 cursor-nw-resize"
+                        onMouseDown={resizeHandler}
+                    ></div>
                 </div>
             </div>
         );
