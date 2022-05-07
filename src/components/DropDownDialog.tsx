@@ -25,10 +25,10 @@ export function DropDownDialog() {
             const thisInnerHeight = window.innerHeight;
             const thisInnerWidth = window.innerWidth;
             if (rect.bottom > thisInnerHeight) {
-                style.top = element.offsetTop - (rect.bottom - thisInnerHeight);
+                dropdownDialogStateController.setState({ top: element.offsetTop - (rect.bottom - thisInnerHeight) });
             }
             if (rect.right > thisInnerWidth) {
-                style.left = element.offsetLeft - (rect.right - thisInnerWidth);
+                dropdownDialogStateController.setState({ left: element.offsetLeft - (rect.right - thisInnerWidth) });
             }
         }
     });
