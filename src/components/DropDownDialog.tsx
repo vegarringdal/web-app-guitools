@@ -39,10 +39,16 @@ export function DropDownDialog() {
         function moveHandler(e: any) {
             const resizeX = e.clientX - x;
             const resizeY = e.clientY - y;
-            const height = dataState.height;
-            const width = dataState.width;
+            let height = dataState.height + resizeY;
+            let width = dataState.width + resizeX;
+            if (height < 100) {
+                height = 100;
+            }
+            if (width < 200) {
+                width = 200;
+            }
 
-            dropdownDialogStateController.setState({ height: height + resizeY, width: width + resizeX });
+            dropdownDialogStateController.setState({ height: height, width: width });
         }
 
         function upHandler() {
@@ -82,15 +88,16 @@ export function DropDownDialog() {
             <div
                 ref={refElement}
                 style={style}
-                className="absolute block bg-gray-100 dark:bg-gray-800 z-[6000] shadow-2xl border border-gray-900 flex flex-col"
+                className="absolute flex bg-gray-100 dark:bg-gray-800 z-[6000] shadow-2xl border p-1 border-gray-900 flex-col"
             >
                 <div className="flex flex-grow">
                     <SimpleHtmlGrid className="simple-html-grid flex-grow" interface={gridInterface}></SimpleHtmlGrid>
                 </div>
 
-                <div className="flex">
+                <div className="flex float">
+                    <div className="flex-1"></div>
                     <button
-                        className="block m-auto bg-gray-200 dark:bg-gray-700 p-2 w-36 hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none dark:text-blue-400 font-semibold"
+                        className="block m-auto mt-1 bg-gray-200 dark:bg-gray-700 p-2 w-36 hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none dark:text-blue-400 font-semibold"
                         onClick={() => {
                             const entity = getDataControllerByName(dataState.parentViewApi).dataSource.currentEntity;
                             if (entity) {
@@ -113,7 +120,7 @@ export function DropDownDialog() {
                     </button>
 
                     <button
-                        className="block m-auto bg-gray-200 dark:bg-gray-700 p-2 w-36 hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none dark:text-blue-400 font-semibold"
+                        className="block ml-1 mr-1 mt-1 bg-gray-200 dark:bg-gray-700 p-2 w-36 hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none dark:text-blue-400 font-semibold"
                         onClick={async () => {
                             const controller = getDataControllerByName(controllerName);
                             controller.service.loadAll({}, true);
@@ -122,7 +129,7 @@ export function DropDownDialog() {
                         Reload
                     </button>
                     <button
-                        className="block m-auto bg-gray-200 dark:bg-gray-700 p-2 w-36 hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none dark:text-blue-400 font-semibold"
+                        className="block m-auto mt-1 bg-gray-200 dark:bg-gray-700 p-2 w-36 hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none dark:text-blue-400 font-semibold"
                         onClick={() => dataState.deactivateRelatedDialog()}
                     >
                         Close
