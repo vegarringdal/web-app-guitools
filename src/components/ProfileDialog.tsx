@@ -9,7 +9,6 @@ import { getAzureAuth } from "../utils/getAzureAuth";
  */
 export function ProfileDialog() {
     const guiState = guiStateController();
-    const serviceState = serviceStateController();
 
     if (!guiState.isProfileDialogActivated) {
         return null;
@@ -27,10 +26,13 @@ export function ProfileDialog() {
                 </span>
 
                 <span className="flex-1 m-auto block text-center mt-4 whitespace-pre-line dark:text-white">
-                    Roles:
+                    Azure roles:
                     {guiState?.allUserRoles?.map((name, i) => {
                         return <div key={i}>{name}</div>;
                     })}
+                </span>
+                <span className="flex-1 m-auto block text-center mt-4 whitespace-pre-line dark:text-white">
+                    TODO: show all roles
                 </span>
                 <div className="absolute bottom-2 left-0 right-0">
                     <div className="flex w-full">
@@ -70,7 +72,6 @@ export function ProfileDialog() {
                                     setTimeout(() => {
                                         serviceStateController.getState().deactivateLoadingData();
                                     }, 1000);
-                                   
                                 }
 
                                 load();
