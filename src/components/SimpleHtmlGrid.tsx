@@ -2,7 +2,6 @@ import { GridInterface } from "@simple-html/grid";
 import "@simple-html/grid";
 import "@simple-html/grid/dist/grid.css";
 import React from "react";
-import { dropdownDialogStateController } from "../state/dropdownDialogStateController";
 
 /**TODO refactor into functiion component */
 
