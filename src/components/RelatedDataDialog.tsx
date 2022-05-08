@@ -30,7 +30,7 @@ export function RelatedDataDialog() {
         const gridInterface = controller.gridInterface;
         return (
             <div className="top-0 fixed grid w-full  h-full items-center justify-center fadeIn z-[6001] bg-gray-50/50 fadeIn">
-                <div className="relative block relatedGrid p-1 bg-gray-100 dark:bg-gray-800 flex flex-col">
+                <div className="relative relatedGrid p-1 bg-gray-100 dark:bg-gray-800 flex flex-col">
                     <span className="w-full block bg-gray-300 p-1 text-center text-base dark:bg-gray-700 dark:text-white mb-1">
                         {dataState.parentTitle}
                     </span>
