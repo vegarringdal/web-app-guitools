@@ -39,21 +39,7 @@ export class SimpleHtmlGrid extends React.Component {
                         if (typeof attributeValue === "string") {
                             // default
                             if (attributeValue.indexOf("http") === 0) {
-                                if (attributeValue.indexOf("httpURL") === 0) {
-                                    window.open(
-                                        attributeValue.replace("httpURL", location.origin),
-                                        attributeValue.replace("httpURL", location.origin)
-                                    );
-                                } else {
-                                    window.open(attributeValue, attributeValue);
-                                }
-                            }
-                            // main window - needs improvement..
-                            if (node.cell.header === "URL_PATH") {
-                                window.open(
-                                    `${location.origin}/dynamic/${attributeValue}`,
-                                    `${location.origin}/dynamic/${attributeValue}`
-                                );
+                                window.open(attributeValue, attributeValue);
                             }
                         }
                     }
