@@ -1,5 +1,4 @@
 import { guiStateController } from "../state/guiStateController";
-import { httpApiConfig } from "../utils/httpApiConfig";
 import { serviceStateController } from "../state/serviceStateController";
 import { getAzureAuth } from "../utils/getAzureAuth";
 

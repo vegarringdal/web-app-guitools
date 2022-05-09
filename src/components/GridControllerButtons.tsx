@@ -7,7 +7,6 @@ import { UserRolesInterface } from "@rad-common";
 import { serviceStateController } from "../state/serviceStateController";
 import { gridControllerButtonActions } from "../utils/gridControllerButtonActions";
 
-
 /**
  * all controller buttons on grid left side
  * ended up beeing crazy big function
@@ -34,8 +33,8 @@ export function GridControllerButtons(props: { dataSet: string }) {
     }
 
     function disableIfLoadingOrNoData(skipRule?: boolean) {
-        if(skipRule === true){
-            return !skipRule
+        if (skipRule === true) {
+            return !skipRule;
         }
         return serviceState.loadingDataDialogActived || datasourceSize() < 1;
     }
@@ -59,7 +58,6 @@ export function GridControllerButtons(props: { dataSet: string }) {
     function disableIfLoadingOrMainPage() {
         return serviceState.loadingDataDialogActived;
     }
-    console.log("x")
 
     /**
      * render

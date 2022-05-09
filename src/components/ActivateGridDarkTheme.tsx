@@ -4,9 +4,6 @@ interface Props {
     enabled: boolean;
 }
 
-
-/**TODO refactor into functiion component */
-
 /**
  * dark theme helper for grid
  */
