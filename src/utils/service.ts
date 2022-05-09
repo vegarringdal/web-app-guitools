@@ -55,7 +55,7 @@ export class Service {
         const primaryKey = getApiConfig(this.dataControllerName).api.primaryKey;
 
         // override if we never have recived data from before
-        updateOnly = this.lastRequest !== null;
+        updateOnly = updateOnly !== true ? false : this.lastRequest !== null;
 
         const primaryKeys: any[] = [];
         if (!updateOnly) {

@@ -107,9 +107,14 @@ export async function gridControllerButtonActions(name: navCompactionEvents, dat
     /**
      * fetches all
      */
-    async function getAll() {
+    async function getAll(useFilter: boolean) {
         const service = getDataControllerByName(dataSet).service;
-        await service.loadAll();
+        if (useFilter) {
+            const gridFilter = getDataControllerByName(dataSet).dataSource.getFilter();
+            await service.loadAll(gridFilter);
+        } else {
+            await service.loadAll();
+        }
     }
 
     /**
@@ -122,7 +127,10 @@ export async function gridControllerButtonActions(name: navCompactionEvents, dat
 
     switch (name) {
         case "getAll":
-            getAll();
+            getAll(false);
+            break;
+        case "getWithFilter":
+            getAll(true);
             break;
         case "refresh":
             refresh();

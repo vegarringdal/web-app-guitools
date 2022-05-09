@@ -80,6 +80,18 @@ export function GridControllerButtons(props: { dataSet: string }) {
             <button
                 className={
                     "m-1 p-1 bg-gray-200 w-28  hover:bg-gray-300 focus:outline-none  dark:bg-gray-700  dark:hover:bg-gray-600 dark:text-blue-400 font-semibold" +
+                    hiddenStyleOrDisabled("getWithFilter") +
+                    disableStyle(disableIfLoadingOrMainPage())
+                }
+                disabled={disableIfLoadingOrMainPage()}
+                onClick={() => gridControllerButtonActions("getWithFilter", props.dataSet)}
+            >
+                Get With Filter
+            </button>
+
+            <button
+                className={
+                    "m-1 p-1 bg-gray-200 w-28  hover:bg-gray-300 focus:outline-none  dark:bg-gray-700  dark:hover:bg-gray-600 dark:text-blue-400 font-semibold" +
                     hiddenStyleOrDisabled("refresh") +
                     disableStyle(disableIfLoadingOrMainPage())
                 }
@@ -263,4 +275,5 @@ export type navCompactionEvents =
     | "getAll"
     | "excel"
     | "gridConfig"
-    | "copy";
+    | "copy"
+    | "getWithFilter";
