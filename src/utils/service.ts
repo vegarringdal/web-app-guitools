@@ -8,6 +8,7 @@ import { httpApiConfig } from "./httpApiConfig";
 import { getApiConfig } from "./apiConfig";
 import { reSelectCurrentEntityAndRefreshDs } from "./reSelectCurrentEntity";
 import { getAccessToken } from "./getAzureAuth";
+import { getModifiedFilter } from "./getModifiedFilter";
 
 export class Service {
     callbackFn: ServiceCallbackType;
@@ -56,11 +57,17 @@ export class Service {
 
         // override if we never have recived data from before
         updateOnly = updateOnly !== true ? false : this.lastRequest !== null;
+        let useQuery = query;
 
         const primaryKeys: any[] = [];
         if (!updateOnly) {
             controller.dataSource.setData([]);
         } else {
+            const modifiedColumn = getApiConfig(this.dataControllerName).api.modified;
+            if (modifiedColumn) {
+                useQuery = getModifiedFilter(query || null, modifiedColumn, this.getLastRequestTimestamp());
+            }
+
             const rows = controller.dataSource.getAllData();
             rows.forEach((r: any) => {
                 primaryKeys.push(r[primaryKey]);
@@ -69,7 +76,7 @@ export class Service {
 
         const error = await this.fetchData(
             this.generateQueryUrlParams(httpApiConfig.query_url + apiName, false),
-            query,
+            useQuery,
             primaryKeys,
             updateOnly
         );
