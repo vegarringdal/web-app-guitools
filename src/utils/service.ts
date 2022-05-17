@@ -164,6 +164,7 @@ export class Service {
             let isReading = true;
             let tempString = ""; // hold half data string if any
             let returnedIds: number[] = [];
+
             while (isReading) {
                 // eslint-disable-next-line prefer-const
                 let { value, done } = await reader.read();
@@ -172,11 +173,11 @@ export class Service {
                 // we can get last char, if its array, then we are in the end..
                 const lastchar = tempString[tempString.length - 1];
                 if (lastchar === "]") {
-                    const jsonText = tempString;
+                    const jsonText = tempString.split(";");
 
                     if (jsonText) {
                         try {
-                            returnedIds = JSON.parse(jsonText);
+                            returnedIds = JSON.parse(jsonText.pop() || "");
                         } catch (e) {
                             // just in case
                         }
@@ -185,10 +186,17 @@ export class Service {
                     }
                 }
 
+                const tempVal = tempString.split(";");
+                if (tempVal.length > 1) {
+                    // we remove progress updates as we get them
+                    // since we might end up with error and get json text back
+                    tempString = tempVal.pop() || "";
+                }
+
                 this.callbackFn({
                     type: "info",
                     header: "Updating",
-                    content: "updated :" + value || ""
+                    content: "updated :" + tempVal.shift() || ""
                 });
 
                 if (done) {
@@ -202,7 +210,7 @@ export class Service {
                                 this.callbackFn({
                                     type: "error",
                                     header: "Update Error",
-                                    content: result.msg
+                                    content: result.msg // TODO maybe I should tell what rows that did OK ?
                                 });
                             } catch (e) {
                                 this.callbackFn({
@@ -211,6 +219,13 @@ export class Service {
                                     content: "unknown error"
                                 });
                             }
+                            this.callbackFn({
+                                type: "done",
+                                header: null,
+                                content: null
+                            });
+                            // rturn result
+                            return { success: false, data: [] };
                         }
                     }
                 }
