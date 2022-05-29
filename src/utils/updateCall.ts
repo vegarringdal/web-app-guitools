@@ -2,7 +2,6 @@ import { Entity } from "@simple-html/datasource";
 import { GridInterface } from "@simple-html/grid";
 import { ApiInterface } from "@rad-common";
 import { Service } from "./service";
-import { getModifiedFilter } from "./getModifiedFilter";
 
 export async function updateCall(
     gridInterface: GridInterface<any>,
@@ -103,11 +102,10 @@ export async function updateCall(
 
         // helper for getting modified columns only
         if (tableConfig.modified && service.getLastRequestTimestamp()) {
-            const query = getModifiedFilter(defaultQuery, tableConfig.modified, service.getLastRequestTimestamp());
             if (!defaultQuery) {
-                await service.loadAll(query, true);
+                await service.loadAll(defaultQuery, true);
             } else {
-                await service.loadAll(query, false);
+                await service.loadAll(defaultQuery, false);
             }
         } else {
             // TODO, do I really want to load all by default?
